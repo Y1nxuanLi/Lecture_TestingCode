@@ -107,17 +107,85 @@ public class Main {
 
         // Interface
         System.out.println("##################################");
-        UltrasoundScanner us1 = new UltrasoundScanner();
+        UltrasoundScanner us1 = new UltrasoundScanner("model_X");
+        // You can't instantiate interface, but can have Array of interface TYPE.
+        // Because you aren't instantiating an interface, you are instantiating an array.
+        // No interfaces are instantiated here:
         ArrayList<Contactable> contactList = new ArrayList<Contactable>();
+        ArrayList<Rebootable> rebootList = new ArrayList<Rebootable>();
+        rebootList.add(us1);
+
         contactList.add(patient1);
         contactList.add(doctor1);
         contactList.add(us1);
+        //Anonymous classes
+        contactList.add(new UltrasoundScanner("model_Y"){
+            public void contact(String msg){
+                System.out.println("One time contact to UltrasoundScanner: " + msg);
+
+            }
+        });
         for(Contactable c:contactList){
             c.contact("All Units attention please!"); // Interface
+            if(c instanceof UltrasoundScanner){
+                ArrayList<Rebootable> reb1 = new ArrayList<Rebootable>();
+                ((UltrasoundScanner) c).reboot(((UltrasoundScanner) c).getModel() + " Reboot success");
+            }
         }
 
         // Subtype Polymorphism:
         //     Interface can allow two non-related class use same method.
         //     Abstract allow two subclasses use same method.
+
+        System.out.println("##################################");
+        // Lecture 4 Error Handling
+
+        try{
+            int a=4;
+            a = a/0;
+            a=a+5;
+            Patient pat9=null;
+            pat9.getName();
+        }
+
+        catch (ArithmeticException e){
+            System.out.println("ERROR_ArithmeticException!!!");
+            System.out.println(e.getMessage());
+        }
+        // Can do multiple catch for one try, but the more general exception case need to be placed behind the specific exception
+        catch(Exception general_e){
+            System.out.println("ERROR_Exception!!!");
+            System.out.println(general_e.getMessage());
+        }
+
+        try{
+            // Patient pat9;  //Can't do this, uninitialized variable is a compile-time error not runtime-error.
+            Patient pat9=null;
+            pat9.getName();
+        }
+        catch (NullPointerException e){
+            System.out.println("ERROR_NullPointerException!!!");
+            System.out.println(e.getMessage());
+        }
+        try{
+            int[] vals = new int[5];
+            vals[3] = 0;
+            vals[7] = 0;
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("ERROR_ArrayIndexOutOfBoundsException!!!");
+            System.out.println(e.getMessage());
+        }
+        finally{
+            System.out.println("'Finally' always execute after try and catch, even when no exception throw up");
+        }
+
+        System.out.println("##################################");
+        UltrasoundInvestigation ui1 = new UltrasoundInvestigation(us1);
+        ui1.scan_no_error_handling();
+
+        System.out.println("##################################");
+        ui1.scan();
+
     }
 }
