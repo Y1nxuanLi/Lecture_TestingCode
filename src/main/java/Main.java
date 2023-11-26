@@ -107,13 +107,30 @@ public class Main {
 
         // Interface
         System.out.println("##################################");
-        UltrasoundScanner us1 = new UltrasoundScanner();
+        UltrasoundScanner us1 = new UltrasoundScanner("model_X");
+        // You can't instantiate interface, but can have Array of interface TYPE.
+        // Because you aren't instantiating an interface, you are instantiating an array.
+        // No interfaces are instantiated here:
         ArrayList<Contactable> contactList = new ArrayList<Contactable>();
+        ArrayList<Rebootable> rebootList = new ArrayList<Rebootable>();
+        rebootList.add(us1);
+
         contactList.add(patient1);
         contactList.add(doctor1);
         contactList.add(us1);
+        //Anonymous classes
+        contactList.add(new UltrasoundScanner("model_Y"){
+            public void contact(String msg){
+                System.out.println("One time contact to UltrasoundScanner: " + msg);
+
+            }
+        });
         for(Contactable c:contactList){
             c.contact("All Units attention please!"); // Interface
+            if(c instanceof UltrasoundScanner){
+                ArrayList<Rebootable> reb1 = new ArrayList<Rebootable>();
+                ((UltrasoundScanner) c).reboot(((UltrasoundScanner) c).getModel() + " Reboot success");
+            }
         }
 
         // Subtype Polymorphism:
