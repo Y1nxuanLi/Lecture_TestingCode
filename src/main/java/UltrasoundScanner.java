@@ -1,6 +1,6 @@
 public class UltrasoundScanner implements Contactable, Rebootable{
     // A class can only have one extend, but can have multiple implements
-    static int SCAN_DATA_SIZE = 10;
+    public static int data;
 
     protected String model;
 
@@ -35,12 +35,10 @@ public class UltrasoundScanner implements Contactable, Rebootable{
         return state;
     }
 
-    public int readData(byte[] x){
-        int value = 0;
-        for (byte b : x) {
-            value = (value << 8) + (b & 0xFF);
-        }
-        return value;
+    public int readData(int data){
+
+        this.data = data;
+        return this.data;
     }
 
     public boolean disconnect(int x){
@@ -49,4 +47,7 @@ public class UltrasoundScanner implements Contactable, Rebootable{
         if (x == 0 ) state = false;
         return state;
     }
+
+
 }
+
